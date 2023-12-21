@@ -72,4 +72,4 @@ function animateCSS(el, animation) {
         }
         el.addEventListener('animationend', handleAnimationEnd, { once: true })
     })
-}ד
+}
