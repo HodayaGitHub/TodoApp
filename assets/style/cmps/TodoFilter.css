@@ -1,0 +1,8 @@
+.todo-filter {
+    background-color: var(--clr2bg);
+}
+
+.todo-filter form {
+    display: grid;
+    grid-template-columns: 100px 200px;
+}
