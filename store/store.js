@@ -6,9 +6,13 @@ export const SET_TODOS = 'SET_TODOS'
 export const ADD_TODO = 'ADD_TODO'
 export const REMOVE_TODO = 'REMOVE_TODO'
 export const UPDATE_TODO = 'UPDATE_TODO'
+export const UPDATE_USER_PREF = 'UPDATE_TODO'
+
 
 /// user
 export const SET_USER = 'SET_USER'
+export const UPDATE_USER = 'SET_USER_FULLNAME'
+
 
 const initialState = {
     todos: [],
@@ -18,6 +22,7 @@ const initialState = {
 
 function appReducer(state = initialState, action = {}) {
     let todos
+    let users
 
     switch (action.type) {
         case SET_TODOS:
@@ -39,6 +44,19 @@ function appReducer(state = initialState, action = {}) {
         // user
         case SET_USER:
             return { ...state, loggedinUser: action.user }
+
+        // case UPDATE_USER:
+        //     return { ...state, loggedinUser: action.user }
+        case UPDATE_USER_PREF:
+            return {
+                ...state,
+                loggedinUser: {
+                    ...state.loggedinUser,
+                    [action.field]: action.user.value,
+                },
+            };
+        case UPDATE_USER:
+            return { ...state, loggedinUser: action.user };
 
         default:
             return state

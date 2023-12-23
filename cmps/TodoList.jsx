@@ -1,24 +1,25 @@
-import { utilService } from "../services/util.service.js"
-
 const { Link } = ReactRouterDOM
-// const { useSelector, useDispatch } = ReactRedux
 const { useState } = React
 
 
 export function TodoList({ todos, onRemoveTodo, onEditTodo }) {
     const [editableTodoId, setEditableTodoId] = useState(null)
+    const [editedTodoTitle, setEditedTodoTitle] = useState('')
 
-    const handleEditClick = (todoId) => {
+    function handleEditClick(todoId, todoTitle) {
         setEditableTodoId(todoId)
+        setEditedTodoTitle(todoTitle)
+        console.log('todoTitle', todoTitle)
     }
 
-    const handleSaveClick = () => {
+    function handleSaveClick(todo) {
         setEditableTodoId(null)
+        onEditTodo(todo, editedTodoTitle)
     }
 
-    const handleDebouncedEdit = utilService.debounce((todo, newTodoTitle) => {
-        onEditTodo(todo, newTodoTitle)
-    }, 300)
+    function handleInputChange(event) {
+        setEditedTodoTitle(event.target.value)
+    }
 
     return (
         <ul className="todo-list">
@@ -28,18 +29,19 @@ export function TodoList({ todos, onRemoveTodo, onEditTodo }) {
                         {editableTodoId === todo._id ? (
                             <div>
                                 <textarea
-                                    value={todo.todoTitle}
-                                    onChange={(e) => handleDebouncedEdit(todo, e.target.value)}
-                                    // rows={Math.min(5, Math.ceil(todo.todoTitle.length / 30))}
+
+                                    value={editedTodoTitle}
+                                    onChange={handleInputChange}
+                                    rows={Math.min(5, Math.ceil(todo.todoTitle.length / 30))}
                                 />
-                                <button onClick={handleSaveClick}>Save</button>
+                                <button onClick={() => handleSaveClick(todo)}>Save</button>
                             </div>
                         ) : (
                             <div>
                                 <h1>{todo.todoTitle}</h1>
                                 <button><Link to={`/todo/${todo._id}`}>Details</Link></button>
                                 <button onClick={() => onRemoveTodo(todo._id)}>X</button>
-                                <button onClick={() => handleEditClick(todo._id)}>Edit</button>
+                                <button onClick={() => handleEditClick(todo._id, todo.todoTitle)}>Edit</button>
                             </div>
                         )}
                     </section>

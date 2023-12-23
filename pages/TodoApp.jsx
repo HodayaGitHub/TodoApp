@@ -60,15 +60,16 @@ export function TodoApp() {
     }
 
 
-    return (
-        <React.Fragment>
-            <AddTodo onAddTodo={onAddTodo} />
-            <TodoList
-                todos={todos}
-                onRemoveTodo={onRemoveTodo}
-                onEditTodo={onEditTodo} />
+if (!todos.length) return <h1> no todos to show..</h1>
+return (
+    <React.Fragment>
+        <AddTodo onAddTodo={onAddTodo} />
+        <TodoList
+            todos={todos}
+            onRemoveTodo={onRemoveTodo}
+            onEditTodo={onEditTodo} />
 
-        </React.Fragment>
-    )
+    </React.Fragment>
+)
 
 }

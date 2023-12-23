@@ -7,15 +7,37 @@ export const userService = {
     login,
     logout,
     signup,
+    save,
     getById,
     getLoggedinUser,
-    updateScore,
-    getEmptyCredentials
+    updateBalance,
+    getEmptyCredentials, 
+    query,
 }
 
 
 function getById(userId) {
     return storageService.get(STORAGE_KEY, userId)
+}
+
+function save(user) {
+    if (user._id) {
+        return storageService.put(STORAGE_KEY, user)
+    } else {
+        return storageService.post(STORAGE_KEY, user)
+    }
+}
+
+function query() {
+    return storageService.query(STORAGE_KEY)
+}
+
+
+function getEmptyUser() {
+    return {
+        fullname: '',
+        isDone: false,
+    }
 }
 
 function login({ username, password }) {
@@ -27,24 +49,24 @@ function login({ username, password }) {
         })
 }
 
-function signup({ username, password, fullname }) {
-    const user = { username, password, fullname, score: 10000 }
+function signup({ username, password, fullname, balance, activities, bgColor, txtColor }) {
+    const user = { username, password, fullname, balance, activities, bgColor, txtColor }
     return storageService.post(STORAGE_KEY, user)
         .then(_setLoggedinUser)
 }
 
 
-function updateScore(diff) {
+function updateBalance(diff) {
     const loggedInUserId = getLoggedinUser()._id
     return userService.getById(loggedInUserId)
         .then(user => {
-            if (user.score + diff < 0) return Promise.reject('No credit')
-            user.score += diff
+            if (user.balance + diff < 0) return Promise.reject('No credit')
+            user.balance += diff
             return storageService.put(STORAGE_KEY, user)
         })
         .then(user => {
             _setLoggedinUser(user)
-            return user.score
+            return user.balance
         })
 }
 
@@ -58,7 +80,15 @@ function getLoggedinUser() {
 }
 
 function _setLoggedinUser(user) {
-    const userToSave = { _id: user._id, fullname: user.fullname, score: user.score }
+    const userToSave = {
+        _id: user._id,
+        fullname: user.fullname,
+        balance: user.balance,
+        activities: user.activities,
+        bgColor: user.bgColor,
+        txtColor: user.txtColor,
+    }
+
     sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(userToSave))
     return userToSave
 }
@@ -74,8 +104,16 @@ function getEmptyCredentials() {
 
 
 // Test Data
-// userService.signup({username: 'muki', password: 'muki1', fullname: 'Muki Ja'})
-// userService.login({username: 'muki', password: 'muki1'})
+// userService.signup({
+//     username: 'muki',
+//     password: 'muki1',
+//     fullname: 'Muki Ja',
+//     balance: 10000,
+//     activities: [{ txt: 'Added a Todo', at: 1523873242735 }],
+//     bgColor: '#FF0000',
+//     txtColor: '#0000FF',
+// })
+userService.login({username: 'muki', password: 'muki1'})
 
 
 
