@@ -30,8 +30,14 @@ export function AppHeader() {
         navigate('/')
     }
 
+
+    const footerStyle = {
+        color: user.txtColor,
+        backgroundColor: user.bgColor,
+    }
+
     return (
-        <header className="app-header full main-layout">
+        <header className="app-header full main-layout" style={footerStyle}>
             <section className="header-container">
                 <h1>React Todo App</h1>
                 <nav className="app-nav">
@@ -44,8 +50,8 @@ export function AppHeader() {
             </section>
             {user ? (
                 < section >
-                    <span to={`/user/${user._id}`}>Hello {user.fullname} 
-                    <span>${user.balance}</span>
+                    <span to={`/user/${user._id}`}>Hello {user.fullname}
+                        <span>${user.balance}</span>
                     </span>
                     <button onClick={onLogout}>Logout</button>
                 </ section >
