@@ -9,7 +9,8 @@ export const todoService = {
     getById,
     save,
     remove,
-    getEmptyTodo
+    getEmptyTodo, 
+    getFinishedTodos,
 }
 
 
@@ -46,6 +47,15 @@ function save(todo) {
         })
 
     }
+}
+
+function getFinishedTodos(todos) {
+    const doneTodo = todos.reduce((acc, todo) => {
+        if (todo.isDone) acc++
+        return acc
+    }, 0)
+
+    return todos.length === 0 ? 0 : (doneTodo / todos.length) * 100
 }
 
 function getEmptyTodo() {

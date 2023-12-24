@@ -3,6 +3,7 @@ import { LoginSignup } from './LoginSignup.jsx'
 import { userService } from '../services/user.service.js'
 import { showErrorMsg } from '../services/event-bus.service.js'
 import { SET_USER } from '../store/reducers/user.reducer.js'
+import { todoService } from '../services/todo-service.js'
 
 const { useSelector, useDispatch } = ReactRedux
 const { Link, NavLink } = ReactRouterDOM
@@ -14,7 +15,6 @@ export function AppHeader() {
 
     const user = useSelector(storeState => storeState.userModule.loggedinUser)
     const todos = useSelector(storeState => storeState.todoModule.todos)
-    console.log(user)
 
 
     function onLogout() {
@@ -37,21 +37,14 @@ export function AppHeader() {
 
 
     function headerStyle(){
-        if(!user) return 
+        if(!user || !todos) return 
         return {
             color: user.txtColor || 'black',
             backgroundColor: user.bgColor || 'white',
         }
     }
 
-    function getFinishedTodos() {
-        const doneTodo = todos.reduce((acc, todo) => {
-            if (todo.isDone) acc++
-            return acc
-        }, 0)
-
-        return todos.length === 0 ? 0 : (doneTodo / todos.length) * 100
-    }
+ 
 
     return (
         <header className="app-header full main-layout" style={headerStyle()}>
@@ -67,7 +60,7 @@ export function AppHeader() {
             </section>
             {user ? (
                 < section >
-                    <h3>You have finished {getFinishedTodos().toFixed(2)}% of the Todos</h3>
+                    <h3>You have finished {todoService.getFinishedTodos(todos).toFixed(2)}% of the Todos</h3>
 
                     <span to={`/user/${user._id}`}>Hello {user.fullname}
                         <span>${user.balance}</span>
