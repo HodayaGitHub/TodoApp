@@ -16,6 +16,10 @@
     width: 100%;
 }
 
+.todo-title {
+    flex-grow: 1;
+}
+
 textarea {
     border: none;
     background-color: transparent;
@@ -25,7 +29,7 @@ textarea {
     /* font-size: inherit; */
     color: inherit;
     font-size: 1.17em;
-    font-family: 'Edu VIC WA NT Beginner', cursive;;
+    font-family: 'Edu VIC WA NT Beginner', cursive;
     font-weight: 800;
 }
 

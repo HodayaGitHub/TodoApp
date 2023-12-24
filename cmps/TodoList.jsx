@@ -1,9 +1,19 @@
 const { Link } = ReactRouterDOM
-const { useState } = React
+const { useState, useRef, useEffect } = React
 
 export function TodoList({ todos, user, onRemoveTodo, onEditTodo }) {
     const [editableTodoId, setEditableTodoId] = useState(null)
     const [editedTodoTitle, setEditedTodoTitle] = useState('')
+    const textareaRef = useRef(null)
+
+    useEffect(() => {
+        // Set focus to the end of the text when the textarea becomes visible
+        if (editableTodoId !== null && textareaRef.current !== null) {
+            textareaRef.current.focus()
+            const length = editedTodoTitle.length
+            textareaRef.current.setSelectionRange(length, length)
+        }
+    }, [editableTodoId, editedTodoTitle])
 
     function handleEditClick(todoId, todoTitle) {
         setEditableTodoId(todoId)
@@ -35,7 +45,7 @@ export function TodoList({ todos, user, onRemoveTodo, onEditTodo }) {
                             <div className="todo-edit" >
                                 <span className="text-area">
                                     <textarea
-                                        autoFocus
+                                        ref={textareaRef}
                                         value={editedTodoTitle}
                                         onChange={handleInputChange}
                                     // rows={Math.min(5, Math.ceil(todo.todoTitle.length / 30))}
@@ -47,7 +57,7 @@ export function TodoList({ todos, user, onRemoveTodo, onEditTodo }) {
                             </div>
                         ) : (
                             <div className="todo-item" >
-                                <span>
+                                <span className="todo-title">
                                     <h1 onClick={() => handleEditClick(todo._id, todo.todoTitle)}>{todo.todoTitle}</h1>
                                 </span>
                                 <span>

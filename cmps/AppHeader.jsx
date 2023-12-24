@@ -13,7 +13,10 @@ export function AppHeader() {
     const navigate = useNavigate()
 
     const user = useSelector(storeState => storeState.userModule.loggedinUser)
-  
+    const todos = useSelector(storeState => storeState.todoModule.todos)
+
+
+
     function onLogout() {
         userService.logout()
             .then(() => {
@@ -24,7 +27,7 @@ export function AppHeader() {
             })
     }
 
-    
+
 
     function onSetUser(user) {
         dispatch({ type: SET_USER, user })
@@ -36,10 +39,19 @@ export function AppHeader() {
         backgroundColor: user.bgColor,
     }
 
+    function getFinishedTodos() {
+        const doneTodo = todos.reduce((acc, todo) => {
+            if (todo.isDone) acc++
+            return acc
+        }, 0)
+
+        return (doneTodo / todos.length) * 100
+    }
+
 
 
     // console.log('color changed', user.bgColor)
-    if(!user) return <h1>Please Log In</h1>
+    if (!user) return <h1>Please Log In</h1>
     return (
         <header className="app-header full main-layout" style={headerStyle}>
             <section className="header-container">
@@ -54,6 +66,8 @@ export function AppHeader() {
             </section>
             {user ? (
                 < section >
+                    <h3>You have finished {getFinishedTodos().toFixed(2)}% of the Todos</h3>
+
                     <span to={`/user/${user._id}`}>Hello {user.fullname}
                         <span>${user.balance}</span>
                     </span>
