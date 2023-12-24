@@ -2,9 +2,8 @@ import { UserMsg } from './UserMsg.jsx'
 import { LoginSignup } from './LoginSignup.jsx'
 import { userService } from '../services/user.service.js'
 import { showErrorMsg } from '../services/event-bus.service.js'
-import { SET_USER } from '../store/store.js'
+import { SET_USER } from '../store/reducers/user.reducer.js'
 
-const { useState } = React
 const { useSelector, useDispatch } = ReactRedux
 const { Link, NavLink } = ReactRouterDOM
 const { useNavigate } = ReactRouter
@@ -13,8 +12,8 @@ export function AppHeader() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const user = useSelector(storeState => storeState.loggedinUser)
-
+    const user = useSelector(storeState => storeState.userModule.loggedinUser)
+  
     function onLogout() {
         userService.logout()
             .then(() => {
@@ -25,17 +24,22 @@ export function AppHeader() {
             })
     }
 
+    
+
     function onSetUser(user) {
         dispatch({ type: SET_USER, user })
         navigate('/')
     }
-
 
     const headerStyle = {
         color: user.txtColor,
         backgroundColor: user.bgColor,
     }
 
+
+
+    // console.log('color changed', user.bgColor)
+    if(!user) return <h1>Please Log In</h1>
     return (
         <header className="app-header full main-layout" style={headerStyle}>
             <section className="header-container">

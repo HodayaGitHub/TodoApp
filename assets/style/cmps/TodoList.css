@@ -2,22 +2,47 @@
     padding: 15px 0 0;
     list-style: none;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    /* grid-template-columns: repeat(auto-fill, minmax(1fr, 1fr)); */
     gap: 15px;
 }
 
 .todo-list li {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
+    /* display: flex;
+    flex-direction: row;
+    /* justify-content: space-between; */
+    /* align-items: center; */
     background-color: var(--clr1bg);
+    width: 100%;
 }
 
 textarea {
-
     border: none;
     background-color: transparent;
     resize: none;
     outline: none;
+    width: 100%;
+    /* font-size: inherit; */
+    color: inherit;
+    font-size: 1.17em;
+    font-family: 'Edu VIC WA NT Beginner', cursive;;
+    font-weight: 800;
+}
+
+.text-area {
+    flex-grow: 1;
+    /* font-size: inherit; */
+
+}
+
+.todo-item,
+.todo-edit {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.todo-edit {
+    width: 100%;
 }

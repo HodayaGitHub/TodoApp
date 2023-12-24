@@ -1,21 +1,20 @@
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 
-const { Link } = ReactRouterDOM
-
 const { useSelector, useDispatch } = ReactRedux
 const { useEffect } = React
 
 
-import { AddTodo } from '../cmps/AddTodo.jsx';
-import { TodoList } from '../cmps/TodoList.jsx';
+import { AddTodo } from '../cmps/AddTodo.jsx'
+import { TodoList } from '../cmps/TodoList.jsx'
 import { todoService } from '../services/todo-service.js'
-import { ADD_TODO, REMOVE_TODO, SET_TODOS, UPDATE_TODO } from '../store/store.js'
+import { TodoFilter } from '../cmps/TodoFilter.jsx'
+import { ADD_TODO, REMOVE_TODO, SET_TODOS, UPDATE_TODO } from '../store/reducers/todo.reducer.js'
 
 export function TodoApp() {
     const dispatch = useDispatch()
 
-    const todos = useSelector(storeState => storeState.todos)
-    const user = useSelector(storeState => storeState.loggedinUser)
+    const todos = useSelector(storeState => storeState.todoModule.todos)
+    const user = useSelector(storeState => storeState.userModule.loggedinUser)
 
     useEffect(() => {
         todoService.query()
@@ -46,7 +45,6 @@ export function TodoApp() {
 
 
     function onEditTodo(todo, newTodoTitle) {
-        // const newTodoTitle = prompt('set new title')
         const todoTosave = { ...todo, todoTitle: newTodoTitle }
 
         todoService.save(todoTosave)
@@ -60,18 +58,18 @@ export function TodoApp() {
             })
     }
 
+    return (
+        <React.Fragment>
+            <AddTodo onAddTodo={onAddTodo} />
+            {!todos.length && <h1> no todos to show..</h1>}
 
-if (!todos.length) return <h1> no todos to show..</h1>
-return (
-    <React.Fragment>
-        <AddTodo onAddTodo={onAddTodo} />
-        <TodoList
-            todos={todos}
-            user={user}
-            onRemoveTodo={onRemoveTodo}
-            onEditTodo={onEditTodo} />
-
-    </React.Fragment>
-)
-
+            {/* {todos.length > 0 && */}
+                <TodoList
+                    todos={todos}
+                    user={user}
+                    onRemoveTodo={onRemoveTodo}
+                    onEditTodo={onEditTodo} />
+            {/* } */}
+        </React.Fragment>
+    )
 }

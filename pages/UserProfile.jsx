@@ -2,12 +2,12 @@ const { useSelector, useDispatch } = ReactRedux
 const { useEffect, useState } = React
 
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
-import { UPDATE_USER, SET_USER } from '../store/store.js'
+import { UPDATE_USER, SET_USER } from '../store/reducers/user.reducer.js'
 import { userService } from '../services/user.service.js'
 
 export function UserProfile() {
 
-    const user = useSelector(storeState => storeState.loggedinUser)
+    const user = useSelector(storeState => storeState.userModule.loggedinUser)
     const dispatch = useDispatch()
 
     const [fullname, setNewFullname] = useState(user.fullname)
@@ -15,8 +15,11 @@ export function UserProfile() {
     const [bgColor, setBgColor] = useState(user.bgColor)
 
     useEffect(() => {
+        if(!user) return 
         userService.getById(user._id).then((user) => {
             dispatch({ type: SET_USER, user })
+        }).catch(error => {
+            console.error('Error fetching user:', error)
         })
     }, [])
 
@@ -25,21 +28,24 @@ export function UserProfile() {
         onEditUser(ev)
     }
 
-    function onEditUser() {
-        const userToSave = {
+
+     function onEditUser() {
+        const userToSave =  {
             ...user,
             fullname: fullname,
             txtColor: txtColor,
             bgColor: bgColor,
         }
 
-        console.log(userToSave)
+        console.log('baba: ', userToSave);
+
 
         userService
-            .save(userToSave)
+            .save({...userToSave})
             .then((updatedUser) => {
+                console.log(' d');
                 console.log("updatedUser", updatedUser)
-                dispatch({ type: UPDATE_USER, user: updatedUser })
+                dispatch({ type: UPDATE_USER, user: {...updatedUser} })
                 showSuccessMsg("User updated successfully")
             })
             .catch((error) => {

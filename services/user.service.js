@@ -113,7 +113,7 @@ function getEmptyCredentials() {
 //     bgColor: '#FF0000',
 //     txtColor: '#0000FF',
 // })
-userService.login({username: 'muki', password: 'muki1'})
+// userService.login({username: 'muki', password: 'muki1'})
 
 
 
