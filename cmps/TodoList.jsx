@@ -1,7 +1,6 @@
 const { Link } = ReactRouterDOM
 const { useState } = React
 
-
 export function TodoList({ todos, user, onRemoveTodo, onEditTodo }) {
     const [editableTodoId, setEditableTodoId] = useState(null)
     const [editedTodoTitle, setEditedTodoTitle] = useState('')
@@ -26,7 +25,7 @@ export function TodoList({ todos, user, onRemoveTodo, onEditTodo }) {
         backgroundColor: user.bgColor,
     }
 
-console.log(todos)
+    console.log(todos)
     return (
         <ul className="todo-list">
             {todos.map(todo =>
@@ -36,6 +35,7 @@ console.log(todos)
                             <div className="todo-edit" >
                                 <span className="text-area">
                                     <textarea
+                                        autoFocus
                                         value={editedTodoTitle}
                                         onChange={handleInputChange}
                                     // rows={Math.min(5, Math.ceil(todo.todoTitle.length / 30))}

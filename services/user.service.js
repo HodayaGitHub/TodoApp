@@ -13,6 +13,7 @@ export const userService = {
     updateBalance,
     getEmptyCredentials, 
     query,
+    addActivity,
 }
 
 
@@ -101,6 +102,29 @@ function getEmptyCredentials() {
         fullname: ''
     }
 }
+
+
+function addActivity(type, todoId) {
+    const activity = {
+        txt: `${type} a Todo with id : ${todoId}`,
+        at: Date.now()
+    }
+    const loggedinUserId = getLoggedinUser()._id
+    return getById(loggedinUserId)
+        .then(user => {
+            if (!user.activities) user.activities = []
+            user.activities.push(activity)
+            return user
+        })
+        .then(userToUpdate => {
+            return storageService.put(STORAGE_KEY, userToUpdate)
+                .then((savedUser) => {
+                    _setLoggedinUser(savedUser)
+                    return savedUser
+                })
+        })
+}
+
 
 
 // Test Data

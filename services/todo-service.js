@@ -27,12 +27,24 @@ function remove(todoId) {
 
 function save(todo) {
     if (todo._id) {
-        return storageService.put(STORAGE_KEY, todo)
+        return storageService.put(STORAGE_KEY, todo).then((savedTodo) => {
+            userService.addActivity('Updated', savedTodo._id)
+            return savedTodo
+        })
     } else {
-        // when switching to backend - remove the next line
         todo.isDone = true
+        todo.createdAt = Date.now()
+
+        // when switching to backend - remove the next line
+
         todo.owner = userService.getLoggedinUser()
-        return storageService.post(STORAGE_KEY, todo)
+        // return storageService.post(STORAGE_KEY, todo)
+
+        return storageService.post(STORAGE_KEY, todo).then((savedTodo) => {
+            userService.addActivity('Added', savedTodo._id)
+            return savedTodo
+        })
+
     }
 }
 
