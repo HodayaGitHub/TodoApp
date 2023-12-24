@@ -19,7 +19,8 @@ export function AppFooter() {
 
     return (
         <footer style={footerStyle()}>
-            {user && <h3>You have finished {todoService.getFinishedTodos(todos).toFixed(2)}% of the Todos</h3>}
+            {user && todos.length > 0  &&
+            <h3>You have finished {todoService.getFinishedTodos(todos).toFixed(2)}% of the Todos</h3>}
             <h1>footer</h1>
         </footer>
     )

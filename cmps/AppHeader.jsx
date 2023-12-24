@@ -36,15 +36,15 @@ export function AppHeader() {
     }
 
 
-    function headerStyle(){
-        if(!user || !todos) return 
+    function headerStyle() {
+        if (!user || !todos) return
         return {
             color: user.txtColor || 'black',
             backgroundColor: user.bgColor || 'white',
         }
     }
 
- 
+
 
     return (
         <header className="app-header full main-layout" style={headerStyle()}>
@@ -60,8 +60,8 @@ export function AppHeader() {
             </section>
             {user ? (
                 < section >
-                    <h3>You have finished {todoService.getFinishedTodos(todos).toFixed(2)}% of the Todos</h3>
-
+                    {user && todos.length > 0 &&
+                        <h3>You have finished {todoService.getFinishedTodos(todos).toFixed(2)}% of the Todos</h3>}
                     <span to={`/user/${user._id}`}>Hello {user.fullname}
                         <span>${user.balance}</span>
                     </span>
