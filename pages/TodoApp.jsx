@@ -83,6 +83,17 @@ export function TodoApp() {
         dispatch(action)
     }
 
+    function onUpdateTodo(todo) {
+        todoService.save(todo)
+            .then((savedTodo) => {
+                dispatch({
+                    type: UPDATE_TODO,
+                    todo: savedTodo
+                })
+            })
+            .catch(console.error)
+    }
+
 
     function todosToShow() {
         if (filterBy === 'all') {
@@ -112,6 +123,7 @@ export function TodoApp() {
                         user={user}
                         onRemoveTodo={onRemoveTodo}
                         onEditTodo={onEditTodo}
+                        onUpdateTodo={onUpdateTodo}
                     />
 
                 </React.Fragment>

@@ -1,7 +1,7 @@
 const { Link } = ReactRouterDOM
 const { useState, useRef, useEffect } = React
 
-export function TodoList({ todos, user, onRemoveTodo, onEditTodo }) {
+export function TodoList({ todos, user, onRemoveTodo, onEditTodo, onUpdateTodo }) {
     const [editableTodoId, setEditableTodoId] = useState(null)
     const [editedTodoTitle, setEditedTodoTitle] = useState('')
     const textareaRef = useRef(null)
@@ -35,6 +35,13 @@ export function TodoList({ todos, user, onRemoveTodo, onEditTodo }) {
         backgroundColor: user.bgColor,
     }
 
+    function onToggleDone(todo) {
+        console.log(todo)
+        const newTodo = { ...todo, isDone: !todo.isDone }
+        onUpdateTodo(newTodo)
+      }
+    
+
     console.log(todos)
     return (
         <ul className="todo-list">
@@ -62,6 +69,7 @@ export function TodoList({ todos, user, onRemoveTodo, onEditTodo }) {
                                 </span>
                                 <span>
                                     <button><Link to={`/todo/${todo._id}`}>Details</Link></button>
+                                    <button onClick={() => onToggleDone(todo)}>✔</button>
                                     <button onClick={() => onRemoveTodo(todo._id)}>X</button>
                                     <button onClick={() => handleEditClick(todo._id, todo.todoTitle)}>Edit</button>
                                 </span>

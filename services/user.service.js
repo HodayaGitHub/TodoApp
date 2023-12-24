@@ -11,7 +11,7 @@ export const userService = {
     getById,
     getLoggedinUser,
     updateBalance,
-    getEmptyCredentials, 
+    getEmptyCredentials,
     query,
     addActivity,
 }
