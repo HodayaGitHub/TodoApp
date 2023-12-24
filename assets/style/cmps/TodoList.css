@@ -13,3 +13,11 @@
     align-items: center;
     background-color: var(--clr1bg);
 }
+
+textarea {
+
+    border: none;
+    background-color: transparent;
+    resize: none;
+    outline: none;
+}

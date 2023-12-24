@@ -15,6 +15,7 @@ export function TodoApp() {
     const dispatch = useDispatch()
 
     const todos = useSelector(storeState => storeState.todos)
+    const user = useSelector(storeState => storeState.loggedinUser)
 
     useEffect(() => {
         todoService.query()
@@ -66,6 +67,7 @@ return (
         <AddTodo onAddTodo={onAddTodo} />
         <TodoList
             todos={todos}
+            user={user}
             onRemoveTodo={onRemoveTodo}
             onEditTodo={onEditTodo} />
 

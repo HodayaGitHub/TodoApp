@@ -31,13 +31,13 @@ export function AppHeader() {
     }
 
 
-    const footerStyle = {
+    const headerStyle = {
         color: user.txtColor,
         backgroundColor: user.bgColor,
     }
 
     return (
-        <header className="app-header full main-layout" style={footerStyle}>
+        <header className="app-header full main-layout" style={headerStyle}>
             <section className="header-container">
                 <h1>React Todo App</h1>
                 <nav className="app-nav">

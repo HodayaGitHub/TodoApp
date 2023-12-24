@@ -2,7 +2,7 @@ const { Link } = ReactRouterDOM
 const { useState } = React
 
 
-export function TodoList({ todos, onRemoveTodo, onEditTodo }) {
+export function TodoList({ todos, onRemoveTodo, onEditTodo, user }) {
     const [editableTodoId, setEditableTodoId] = useState(null)
     const [editedTodoTitle, setEditedTodoTitle] = useState('')
 
@@ -21,15 +21,20 @@ export function TodoList({ todos, onRemoveTodo, onEditTodo }) {
         setEditedTodoTitle(event.target.value)
     }
 
+    const todoStyle = {
+        color: user.txtColor,
+        backgroundColor: user.bgColor,
+    }
+
+
     return (
         <ul className="todo-list">
             {todos.map(todo =>
-                <li key={todo._id}>
+                <li style={todoStyle} key={todo._id}>
                     <section>
                         {editableTodoId === todo._id ? (
-                            <div>
+                            <div >
                                 <textarea
-
                                     value={editedTodoTitle}
                                     onChange={handleInputChange}
                                     rows={Math.min(5, Math.ceil(todo.todoTitle.length / 30))}
