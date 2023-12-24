@@ -14,7 +14,7 @@ export function AppHeader() {
 
     const user = useSelector(storeState => storeState.userModule.loggedinUser)
     const todos = useSelector(storeState => storeState.todoModule.todos)
-
+    console.log(user)
 
 
     function onLogout() {
@@ -30,13 +30,18 @@ export function AppHeader() {
 
 
     function onSetUser(user) {
+        if (!user) return
         dispatch({ type: SET_USER, user })
         navigate('/')
     }
 
-    const headerStyle = {
-        color: user.txtColor,
-        backgroundColor: user.bgColor,
+
+    function headerStyle(){
+        if(!user) return 
+        return {
+            color: user.txtColor || 'black',
+            backgroundColor: user.bgColor || 'white',
+        }
     }
 
     function getFinishedTodos() {
@@ -45,15 +50,11 @@ export function AppHeader() {
             return acc
         }, 0)
 
-        return (doneTodo / todos.length) * 100
+        return todos.length === 0 ? 0 : (doneTodo / todos.length) * 100
     }
 
-
-
-    // console.log('color changed', user.bgColor)
-    if (!user) return <h1>Please Log In</h1>
     return (
-        <header className="app-header full main-layout" style={headerStyle}>
+        <header className="app-header full main-layout" style={headerStyle()}>
             <section className="header-container">
                 <h1>React Todo App</h1>
                 <nav className="app-nav">
