@@ -1,8 +1,14 @@
-export function TodoFilter({ onSetFilter }) {
+export function TodoFilter({ setFilter, setSearchText }) {
     return (
         <section className="todo-filter">
             <div className="radio-sort flex justify-center align-center">
-
+                <label>
+                    Search:
+                    <input
+                        type="text"
+                        onChange={(ev) => setSearchText(ev.target.value)}                  
+                    />
+                </label>
                 <label htmlFor="all">
                     {' '}
                     All <input
@@ -10,7 +16,7 @@ export function TodoFilter({ onSetFilter }) {
                         name="setReadDis"
                         value="all"
                         id="all"
-                        onChange={onSetFilter} />
+                        onChange={setFilter} />
                     {' '}
                 </label>
                 <label htmlFor="done">
@@ -20,7 +26,7 @@ export function TodoFilter({ onSetFilter }) {
                         name="setReadDis"
                         value="done"
                         id="done"
-                        onChange={onSetFilter} />
+                        onChange={setFilter} />
                     {' '}
                 </label>
                 <label htmlFor="undone">
@@ -30,7 +36,7 @@ export function TodoFilter({ onSetFilter }) {
                         name="setReadDis"
                         value="undone"
                         id="undone"
-                        onChange={onSetFilter} />
+                        onChange={setFilter} />
                     {' '}
                 </label>
             </div>

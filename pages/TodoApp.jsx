@@ -8,7 +8,7 @@ import { AddTodo } from '../cmps/AddTodo.jsx'
 import { TodoList } from '../cmps/TodoList.jsx'
 import { todoService } from '../services/todo-service.js'
 import { TodoFilter } from '../cmps/TodoFilter.jsx'
-import { ADD_TODO, REMOVE_TODO, SET_TODOS, UPDATE_TODO, SET_FILTER_BY } from '../store/reducers/todo.reducer.js'
+import { ADD_TODO, REMOVE_TODO, SET_TODOS, UPDATE_TODO, SET_FILTER_BY, SET_SEARCH_TEXT } from '../store/reducers/todo.reducer.js'
 
 
 export function TodoApp() {
@@ -17,17 +17,18 @@ export function TodoApp() {
     const todos = useSelector(storeState => storeState.todoModule.todos)
     const user = useSelector(storeState => storeState.userModule.loggedinUser)
     const filterBy = useSelector((storeState) => storeState.todoModule.filterBy)
+    const searchText = useSelector((storeState) => storeState.todoModule.searchText)
 
 
     useEffect(() => {
-        todoService.query(filterBy)
+        todoService.query(filterBy, searchText)
             .then(todos => {
                 dispatch({ type: SET_TODOS, todos })
             })
             .catch(err => {
                 console.error('Cannot load todos:', err)
             })
-    }, [])
+    }, [searchText])
 
     function onAddTodo(todoToSave) {
         todoService.save(todoToSave)
@@ -73,10 +74,27 @@ export function TodoApp() {
         dispatch(action)
     }
 
+    function setSearchText(text) {
+        console.log(text)
+        const action = {
+            type: SET_SEARCH_TEXT,
+            text,
+        }
+        dispatch(action)
+    }
+
+
     function todosToShow() {
-        console.log('todosfilterbyall', todos)
-        if (filterBy === 'all') return todos
-        return todos.filter((todo) => (filterBy === 'done' ? todo.isDone : !todo.isDone))
+        if (filterBy === 'all') {
+            return todos.filter((todo) =>
+                todo.todoTitle.toLowerCase().includes(searchText.toLowerCase())
+            )
+        }
+        return todos.filter((todo) =>
+            filterBy === 'done'
+                ? todo.isDone && todo.todoTitle.toLowerCase().includes(searchText.toLowerCase())
+                : !todo.isDone && todo.todoTitle.toLowerCase().includes(searchText.toLowerCase())
+        )
     }
 
 
@@ -84,11 +102,11 @@ export function TodoApp() {
         <React.Fragment>
             <AddTodo onAddTodo={onAddTodo} />
             {!todos.length && <h1> no todos to show..</h1>}
-            
+
             {todos.length > 0 &&
                 <React.Fragment>
-                    <TodoFilter onSetFilter={setFilter} />
-                    
+                    <TodoFilter setFilter={setFilter} setSearchText={setSearchText} />
+
                     <TodoList
                         todos={todosToShow()}
                         user={user}
