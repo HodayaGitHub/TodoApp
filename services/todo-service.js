@@ -29,7 +29,7 @@ function remove(todoId) {
 function save(todo) {
     if (todo._id) {
         return storageService.put(STORAGE_KEY, todo).then((savedTodo) => {
-            userService.addActivity('Updated', savedTodo._id)
+            userService.addActivity('Updated', savedTodo.todoTitle)
             return savedTodo
         })
     } else {
@@ -42,7 +42,7 @@ function save(todo) {
         // return storageService.post(STORAGE_KEY, todo)
 
         return storageService.post(STORAGE_KEY, todo).then((savedTodo) => {
-            userService.addActivity('Added', savedTodo._id)
+            userService.addActivity('Added', savedTodo.todoTitle)
             return savedTodo
         })
 
@@ -66,7 +66,7 @@ function getEmptyTodo() {
 }
 
 // TEST DATA
-storageService.post(STORAGE_KEY, {todoTitle: 'Go shopping',  isDone: false}).then(x => console.log(x))
+// storageService.post(STORAGE_KEY, {todoTitle: 'Go shopping',  isDone: false}).then(x => console.log(x))
 
 
 

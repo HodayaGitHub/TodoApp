@@ -104,9 +104,9 @@ function getEmptyCredentials() {
 }
 
 
-function addActivity(type, todoId) {
+function addActivity(type, todoTitle) {
     const activity = {
-        txt: `${type} a Todo with id : ${todoId}`,
+        txt: `${type} a Todo with title : ${todoTitle}`,
         at: Date.now()
     }
     const loggedinUserId = getLoggedinUser()._id
