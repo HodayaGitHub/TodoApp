@@ -30,6 +30,7 @@ function save(todo) {
         return storageService.put(STORAGE_KEY, todo)
     } else {
         // when switching to backend - remove the next line
+        todo.isDone = true
         todo.owner = userService.getLoggedinUser()
         return storageService.post(STORAGE_KEY, todo)
     }

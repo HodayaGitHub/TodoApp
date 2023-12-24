@@ -8,18 +8,24 @@ import { AddTodo } from '../cmps/AddTodo.jsx'
 import { TodoList } from '../cmps/TodoList.jsx'
 import { todoService } from '../services/todo-service.js'
 import { TodoFilter } from '../cmps/TodoFilter.jsx'
-import { ADD_TODO, REMOVE_TODO, SET_TODOS, UPDATE_TODO } from '../store/reducers/todo.reducer.js'
+import { ADD_TODO, REMOVE_TODO, SET_TODOS, UPDATE_TODO, SET_FILTER_BY } from '../store/reducers/todo.reducer.js'
+
 
 export function TodoApp() {
     const dispatch = useDispatch()
 
     const todos = useSelector(storeState => storeState.todoModule.todos)
     const user = useSelector(storeState => storeState.userModule.loggedinUser)
+    const filterBy = useSelector((storeState) => storeState.todoModule.filterBy)
+
 
     useEffect(() => {
-        todoService.query()
+        todoService.query(filterBy)
             .then(todos => {
                 dispatch({ type: SET_TODOS, todos })
+            })
+            .catch(err => {
+                console.error('Cannot load todos:', err)
             })
     }, [])
 
@@ -58,18 +64,41 @@ export function TodoApp() {
             })
     }
 
+    // todos filtring 
+    function setFilter(ev) {
+        const action = {
+            type: SET_FILTER_BY,
+            val: ev.target.value,
+        }
+        dispatch(action)
+    }
+
+    function todosToShow() {
+        console.log('todosfilterbyall', todos)
+        if (filterBy === 'all') return todos
+        return todos.filter((todo) => (filterBy === 'done' ? todo.isDone : !todo.isDone))
+    }
+
+
     return (
         <React.Fragment>
             <AddTodo onAddTodo={onAddTodo} />
             {!todos.length && <h1> no todos to show..</h1>}
+            
+            {todos.length > 0 &&
+                <React.Fragment>
+                    <TodoFilter onSetFilter={setFilter} />
+                    
+                    <TodoList
+                        todos={todosToShow()}
+                        user={user}
+                        onRemoveTodo={onRemoveTodo}
+                        onEditTodo={onEditTodo}
+                    />
 
-            {/* {todos.length > 0 && */}
-                <TodoList
-                    todos={todos}
-                    user={user}
-                    onRemoveTodo={onRemoveTodo}
-                    onEditTodo={onEditTodo} />
-            {/* } */}
+                </React.Fragment>
+
+            }
         </React.Fragment>
     )
 }

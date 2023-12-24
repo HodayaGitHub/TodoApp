@@ -2,10 +2,13 @@ export const SET_TODOS = 'SET_TODOS'
 export const ADD_TODO = 'ADD_TODO'
 export const REMOVE_TODO = 'REMOVE_TODO'
 export const UPDATE_TODO = 'UPDATE_TODO'
+export const SET_FILTER_BY = 'SET_FILTER_BY'
+
 
 const initialState = {
     todos: [],
     isLoading: false,
+    filterBy: 'all', 
 }
 
 export function todoReducer(state = initialState, action) {
@@ -22,6 +25,12 @@ export function todoReducer(state = initialState, action) {
         case UPDATE_TODO:
             todos = state.todos.map(todo => (todo._id === action.todo._id ? action.todo : todo))
             return { ...state, todos }
+        case SET_FILTER_BY:
+            return { ...state, filterBy: action.val }
+
+        // case SET_FILTER_BY:
+        //     return { ...state, filterBy: { ...state.filterBy, ...action.filterBy } }
+
         default:
             return state
     }
